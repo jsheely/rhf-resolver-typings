@@ -10,11 +10,19 @@ export const Route = createFileRoute('/form')({
   component: Form,
 })
 
-const schema: z.ZodType<Item> = z.object({
+const schema = z.object({
   id: z.number().min(1),
-  name: z.string().min(1, { message: 'Name is required' }),
+  name: z.string().min(1, { error: 'Name is required' }),
   description: z.string().optional(),
-})
+}) satisfies z.ZodType<Item>
+
+// const schema3 = z3.object({
+//   id: z3.number().min(1),
+//   name: z3.string().min(1, { message: 'Name is required' }),
+//   description: z3.string().optional(),
+// }) satisfies z3.ZodType<Item>
+
+// type InferredItem = z.infer<typeof schema>
 
 function Form() {
   const defaultValues = useMemo<Item>(
@@ -30,5 +38,6 @@ function Form() {
     reValidateMode: 'onSubmit',
     resolver: zodResolver(schema),
   })
+
   return <div>Form Route</div>
 }
